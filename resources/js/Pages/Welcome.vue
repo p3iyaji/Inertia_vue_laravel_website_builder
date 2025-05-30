@@ -18,24 +18,31 @@ onMounted(() => {
         <Head title="Welcome to" />
         <Hero />
         <!-- content -->
+        <!-- what we do section -->
         <section class="bg-white dark:bg-gray-900 mb-0">
             <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
                 <div class="max-w-full mb-8 lg:mb-16">
                     <!-- company name & brief intro -->
-                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Infinite
-                        Digits</h2>
-                    <p class="text-gray-500 sm:text-xl text-justify dark:text-gray-400 mb-5">We partners with renowned
-                        telecom companies and
-                        equipment manufacturers from around the world, providing
-                        superior project management and supply chain management
-                        expertise and offering guaranteed high quality
-                        professional services.</p><span class="mt-5"> <Link :href="route('about')"
-                            class="inline-flex items-center bg-blue-700 justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    <div>
+                        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Infinite
+                            Digits</h2>
+                        <p class="text-gray-500 sm:text-xl text-justify dark:text-gray-400 mb-5">We partners with
+                            renowned
+                            telecom companies and
+                            equipment manufacturers from around the world, providing
+                            superior project management and supply chain management
+                            expertise and offering guaranteed high quality
+                            professional services.</p><span class="mt-5">
+                            <Link :href="route('about')"
+                                class="inline-flex items-center bg-blue-700 justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                             ...Read more
-                        </Link></span>
-                        <!-- End -->
+                            </Link>
+                        </span>
+                    </div>
+
+                    <!-- End -->
                 </div>
-                <!-- What we do -->
+                <!-- 3 of our services -->
                 <div
                     class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0 dark:bg-gray-800 px-4 py-4 rounded-md">
                     <div
@@ -58,7 +65,8 @@ onMounted(() => {
                         <h3
                             class="mb-2 text-xl font-bold text-yellow-800 dark:text-white transition-all duration-300 group-hover:text-gray-800">
                             Solutions Oriented</h3>
-                        <p class="text-gray-800 dark:text-gray-400 font-semibold transition-all duration-300 group-hover:text-gray-800">
+                        <p
+                            class="text-gray-800 dark:text-gray-400 font-semibold transition-all duration-300 group-hover:text-gray-800">
                             We understand the
                             business needs
                             of our customers
@@ -121,7 +129,8 @@ onMounted(() => {
                         <h3
                             class="mb-2 text-xl font-bold text-yellow-800 dark:text-white transition-all duration-300 group-hover:text-gray-800">
                             Results Oriented</h3>
-                        <p class="text-gray-800 font-semibold dark:text-gray-400 transition-all duration-300 group-hover:text-gray-800">
+                        <p
+                            class="text-gray-800 font-semibold dark:text-gray-400 transition-all duration-300 group-hover:text-gray-800">
                             We achieve customer
                             satisfaction by
                             delivering excellent
@@ -139,7 +148,7 @@ onMounted(() => {
 
 
                 </div>
-                <!-- End what we do -->
+                <!-- End 3 services section -->
 
                 <!-- Other services we render 4 options with title and description -->
                 <div
@@ -228,9 +237,10 @@ onMounted(() => {
                     </div>
 
                 </div>
-                <!-- End -->
+                <!-- End other services -->
             </div>
         </section>
+        <!-- what we do section ends -->
 
         <!-- Our services brief description -->
         <section class="bg-blue-100 dark:bg-gray-900 flex items-center mt-0">
@@ -252,15 +262,15 @@ onMounted(() => {
 
                     <Link :href="route('services')"
                         class="inline-flex items-center justify-center px-5 py-3 text-base font-medium bg-blue-700 text-center text-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                        Speak to Us
-                </Link>
+                    Speak to Us
+                    </Link>
                 </div>
                 <div class="hidden lg:mt-0 lg:col-span-5 lg:flex ml-5">
                     <img src="/images/telecom2.jpg" alt="mockup" height="400" width="400" class="rounded-lg shadow">
                 </div>
             </div>
         </section>
-        <!-- End -->
+        <!-- End  -->
 
         <!-- Logo of companies we have worked section can be on or off -->
         <section class="bg-white dark:bg-gray-900">

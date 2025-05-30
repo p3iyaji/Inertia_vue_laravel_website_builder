@@ -23,7 +23,7 @@ console.log(footer);
         '--dark-bg-color': footer.dark_bg_color,
         '--dark-text-color': footer.dark_text_color
     }"
-    class="w-full mx-auto shadow-lg m-4 [&:not(:has(*))]:bg-[var(--bg-color)] [&:not(:has(*))]:text-[var(--text-color)] dark:[&:not(:has(*))]:bg-[var(--dark-bg-color)] dark:[&:not(:has(*))]:text-[var(--dark-text-color)]"
+    class="w-full mb-0 mx-auto shadow-lg m-4 [&:not(:has(*))]:bg-[var(--bg-color)] [&:not(:has(*))]:text-[var(--text-color)] dark:[&:not(:has(*))]:bg-[var(--dark-bg-color)] dark:[&:not(:has(*))]:text-[var(--dark-text-color)]"
 >
         <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
             <span class="text-sm">

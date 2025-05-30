@@ -8,7 +8,7 @@ import { Head } from '@inertiajs/vue3';
 
     <SiteLayout>
         <Head title="About" />
-        <!-- content -->
+        <!-- company title description with mission and vision -->
         <section class="dark:bg-gray-900 mb-0 mt-5 bg-gray-700">
             <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
                 <div class="max-w-full mb-8 lg:mb-16">
@@ -91,7 +91,7 @@ import { Head } from '@inertiajs/vue3';
                     <p class="font-light text-white lg:mb-16 sm:text-xl dark:text-gray-400">Get to know Our Team members </p>
                 </div>
          </section>
-         
+         <!-- team members display -->
         <section class="bg-white dark:bg-gray-900">
             <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
                 
@@ -317,7 +317,7 @@ import { Head } from '@inertiajs/vue3';
                 </div>
             </div>
         </section>
-        <!-- End Our team -->
+        <!-- End Our teams display -->
 
         <!-- End content -->
    

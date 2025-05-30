@@ -15,7 +15,7 @@ class FooterController extends Controller
      */
     public function index()
     {
-        $footers = Footer::get();
+        $footers = Footer::orderBy('created_at', 'desc')->get();
         return Inertia::render('Admin/Settings/PageFooter', [ 'footers' => $footers ]);
 
     }
@@ -36,10 +36,31 @@ class FooterController extends Controller
         $validated = $request->validate([
             'company_name' => 'required|string|max:255',
             'year' => 'required|integer',
-            'bg_color' => 'required|string|size:7|starts_with:#',
-            'text_color' => 'required|string|size:7|starts_with:#',
-            'dark_bg_color' => 'required|string|size:7|starts_with:#',
-            'dark_text_color' => 'required|string|size:7|starts_with:#',
+            'bg_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+
+            'text_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'dark_bg_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'dark_text_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
         ]);
     
         $converter = new ColorConverter();
@@ -51,37 +72,82 @@ class FooterController extends Controller
             'text_color' => $validated['text_color'],
             'dark_bg_color' => $validated['dark_bg_color'],
             'dark_text_color' => $validated['dark_text_color'],
-            'bg_color_tw' => $converter->hexToTailwind($validated['bg_color']),
-            'text_color_tw' => $converter->hexToTailwind($validated['text_color']),
-            'dark_bg_color_tw' => $converter->hexToTailwind($validated['dark_bg_color']),
-            'dark_text_color_tw' => $converter->hexToTailwind($validated['dark_text_color']),
+            'bg_color_tw' => $this->getTailwindClass($validated['bg_color'], $converter),
+            'text_color_tw' => $this->getTailwindClass($validated['text_color'], $converter),
+            'dark_bg_color_tw' => $this->getTailwindClass($validated['dark_bg_color'], $converter),
+            'dark_text_color_tw' => $this->getTailwindClass($validated['dark_text_color'], $converter),
         ]);
-
-        return redirect()->route('pagefooter')->with('success', 'Footer created successfully');
+    
+        return to_route('pagefooter');
+        
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    
+    protected function getTailwindClass(string $color, ColorConverter $converter): string
     {
-        //
+        // If already in Tailwind format (like 'red-500'), return as-is
+        if (preg_match('/^[a-z]+-\d{2,3}$/', $color)) {
+            return $color;
+        }
+        
+        // Otherwise convert from hex
+        return $converter->hexToTailwind($color);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        
+        $validated = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'year' => 'required|integer',
+            'bg_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+
+            'text_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'dark_bg_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'dark_text_color' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+        ]);
+    
+        $converter = new ColorConverter();
+
+        $footer = Footer::findOrFail($id);
+      
+            $footer->company_name = $validated['company_name'];
+            $footer->year = $validated['year'];
+            $footer->bg_color = $validated['bg_color'];
+            $footer->text_color = $validated['text_color'];
+            $footer->dark_bg_color = $validated['dark_bg_color'];
+            $footer->dark_text_color = $validated['dark_text_color'];
+            $footer->bg_color_tw = $this->getTailwindClass($validated['bg_color'], $converter);
+            $footer->text_color_tw = $this->getTailwindClass($validated['text_color'], $converter);
+            $footer->dark_bg_color_tw = $this->getTailwindClass($validated['dark_bg_color'], $converter);
+            $footer->dark_text_color_tw = $this->getTailwindClass($validated['dark_text_color'], $converter);
+            $footer->update();
+    
+        return to_route('pagefooter');
+
     }
 
     /**
@@ -89,6 +155,9 @@ class FooterController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+    
+        $footer = Footer::find($id);
+        $footer->delete();
+        return to_route('pagefooter');
     }
 }

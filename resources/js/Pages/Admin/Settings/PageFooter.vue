@@ -1,9 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { initFlowbite } from 'flowbite'
-import { reactive } from 'vue'
-import { useForm, usePage } from '@inertiajs/vue3'
+import { useForm, usePage, router } from '@inertiajs/vue3'
+import Swal from 'sweetalert2'
+
 
 // initialize components based on data attribute selectors
 onMounted(() => {
@@ -12,11 +13,15 @@ onMounted(() => {
 
 const props = defineProps({
     errors: Object,
+    flash: Object
     //footers: Array,
- 
+
 })
 
 const footers = usePage().props.footers;
+const showModal = ref(false);
+const isEditing = ref(false);
+const currentFooterId = ref(null);
 
 const form = useForm({
     company_name: '',
@@ -37,12 +42,124 @@ const fields = [
 ]
 
 const submit = () => {
-    form.post(route('pagefooter.store'), {
-        onSuccess: () => {
-            form.reset()
-        }
-    })
+    if (isEditing.value) {
+        form.post(route('pagefooter.update', currentFooterId.value), {
+            _method: 'put',
+            onSuccess: () => {
+                resetForm();
+                closeModal();
+                router.visit(route('pagefooter'));
+                Swal.fire({
+                toast: true,
+                icon: 'success',
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                title: 'Footer updated successfully'
+            });
+            }
+        });
+    } else {
+        form.post(route('pagefooter.store'), {
+            onSuccess: () => {
+                form.reset();
+                closeModal();
+                router.visit(route('pagefooter'));
+
+                Swal.fire({
+                toast: true,
+                icon: 'success',
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                title: "Footer added successfully"
+            });
+            }
+        });
+    }
+
 }
+const addFooter = (footer) => {
+    isEditing.value = false;
+    currentFooterId.value = '';
+    form.company_name = '';
+    form.year = '';
+    form.bg_color = '';
+    form.text_color = '';
+    form.dark_bg_color = '';
+    form.dark_text_color = '';
+
+    //open modal
+    openModal();
+}
+
+const editFooter = (footer) => {
+    isEditing.value = true;
+    currentFooterId.value = footer.id;
+    form.company_name = footer.company_name;
+    form.year = footer.year;
+    form.bg_color = footer.bg_color;
+    form.text_color = footer.text_color;
+    form.dark_bg_color = footer.dark_bg_color;
+    form.dark_text_color = footer.dark_text_color;
+
+    //open modal
+    openModal();
+}
+
+const resetForm = () => {
+    form.reset();
+    isEditing.value = false;
+    currentFooterId.value = null;
+}
+const openModal = () => {
+    showModal.value = true;
+    // Disable body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+const closeModal = () => {
+    showModal.value = false;
+    // Re-enable body scroll
+    document.body.style.overflow = 'auto';
+}
+
+const deleteFooter = async (footer) => {
+    const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    })
+    
+    if (result.isConfirmed) {
+        try {
+            await router.delete(route('pagefooter.destroy', footer.id));
+            router.visit(route('pagefooter'));
+            Swal.fire({
+                toast: true,
+                icon: 'success',
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                title: 'Footer deleted successfully'
+            })
+        } catch (error) {
+            Swal.fire({
+                toast: true,
+                icon: 'error',
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                title: 'Failed to delete footer'
+            })
+        }
+    }
+}
+
 
 
 </script>
@@ -82,8 +199,8 @@ const submit = () => {
                                 <div
                                     class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
 
-                                    <button data-modal-target="default-modal" data-modal-toggle="default-modal"
-                                        class="flex items-center justify-center  px-4 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    <button @click="addFooter"
+                                        class="flex items-center justify-center px-4 py-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                         type="button">
                                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -92,6 +209,7 @@ const submit = () => {
                                         </svg>
                                         Add Footer
                                     </button>
+
 
                                     <div class="flex items-center space-x-3 w-full md:w-auto">
                                         <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown"
@@ -199,106 +317,33 @@ const submit = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="footer in footers" :key="footer.id" class="border-b dark:border-gray-700">
+                                        <tr v-for="footer in footers" :key="footer.id"
+                                            class="border-b dark:border-gray-700">
                                             <th scope="row"
                                                 class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {{ footer.company_name }}</th>
                                             <td class="px-4 py-3">{{ footer.year }}</td>
-                                            <td class="px-4 py-3">{{ footer.bg_color }}</td>
-                                            <td class="px-4 py-3">{{ footer.text_color }}</td>
-                                            <td class="px-4 py-3">{{ footer.dark_bg_color }}</td>
-                                            <td class="px-4 py-3">{{ footer.dark_text_color }}</td>
-
-                                            <td class="px-4 py-3 flex items-center justify-end">
-                                                <button id="apple-imac-27-dropdown-button"
-                                                    data-dropdown-toggle="apple-imac-27-dropdown"
-                                                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                                    type="button">
-                                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                                        viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                    </svg>
-                                                </button>
-                                                <div id="apple-imac-27-dropdown"
-                                                    class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                                        aria-labelledby="apple-imac-27-dropdown-button">
-                                                        <li>
-                                                            <a href="#"
-                                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#"
-                                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="py-1">
-                                                        <a href="#"
-                                                            class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                                    </div>
-                                                </div>
+                                            <td class="px-4 py-3">{{ footer.bg_color_tw }}</td>
+                                            <td class="px-4 py-3">{{ footer.text_color_tw }}</td>
+                                            <td class="px-4 py-3">{{ footer.dark_bg_color_tw }}</td>
+                                            <td class="px-4 py-3">{{ footer.dark_text_color_tw }}</td>
+                                            <td class="px-4 py-3">
+                                                <button type="button" @click="editFooter(footer)"
+                                                    class="block py-2 px-4 font-semibold hover:rounded-md text-yellow-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    Edit</button>
                                             </td>
+                                            <td class="px-4 py-3">
+                                                <button type="button" @click="deleteFooter(footer)"
+                                                    class="block py-2 px-4 font-semibold hover:rounded-md text-red-600 hover:bg-red-100 dark:hover:bg-red-600 dark:hover:text-white">
+                                                    Delete</button>
+                                            </td>
+
                                         </tr>
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
-                            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                                aria-label="Table navigation">
-                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                    Showing
-                                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                                    of
-                                    <span class="font-semibold text-gray-900 dark:text-white">1000</span>
-                                </span>
-                                <ul class="inline-flex items-stretch -space-x-px">
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            <span class="sr-only">Previous</span>
-                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" aria-current="page"
-                                            class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                            <span class="sr-only">Next</span>
-                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
-                                                viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                          
                         </div>
                     </div>
                 </section>
@@ -306,8 +351,8 @@ const submit = () => {
 
 
                 <!-- Main modal -->
-                <div id="default-modal" tabindex="-1" aria-hidden="true"
-                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div id="default-modal" tabindex="-1" :class="{ 'hidden': !showModal, 'flex': showModal }"
+                    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <!-- Backdrop - separate div covering entire screen -->
                     <div class="fixed inset-0 bg-black bg-opacity-75 z-40"></div>
 
@@ -319,9 +364,9 @@ const submit = () => {
                             <div
                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                    Add Footer
+                                    {{ isEditing ? 'Edit Footer' : 'Add Footer' }}
                                 </h3>
-                                <button type="button"
+                                <button type="button" @click="closeModal"
                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     data-modal-hide="default-modal">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +402,7 @@ const submit = () => {
 
                                     <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700">
-                                        Save Theme
+                                        Save Footer
                                     </button>
                                 </form>
                             </div>

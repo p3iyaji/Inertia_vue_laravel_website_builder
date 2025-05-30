@@ -17,10 +17,10 @@ return new class extends Migration
             $table->integer('year');
             
             // Hex values
-            $table->string('bg_color', 7);
-            $table->string('text_color', 7);
-            $table->string('dark_bg_color', 7);
-            $table->string('dark_text_color', 7);
+            $table->string('bg_color', 10);
+            $table->string('text_color', 10);
+            $table->string('dark_bg_color', 10);
+            $table->string('dark_text_color', 10);
             
             // Tailwind classes
             $table->string('bg_color_tw')->nullable();

@@ -11,7 +11,7 @@ export default {
     ],
     safelist: [
         {
-          pattern: /(bg|text)-(white|black|gray-\d+|red-\d+|blue-\d+)/,
+          pattern: /(bg|text|dark:bg|dark:text)-(red|orange|yellow|green|blue|indigo|purple|pink|gray|slate|zinc|neutral|stone|amber|lime|emerald|teal|cyan|sky|violet|fuchsia|rose)-(50|100|200|300|400|500|600|700|800|900)/,
           variants: ['dark'],
         },
       ],

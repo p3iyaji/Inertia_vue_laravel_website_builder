@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('navbars', function (Blueprint $table) {
             $table->id();
+            $table->string('company_logo');
+            $table->string('company_name');
+
+            $table->boolean('get_in_touch')->default(false);
+             // Hex values
+             $table->string('bg_color', 10);
+             $table->string('text_color', 10);
+             $table->string('dark_bg_color', 10);
+             $table->string('dark_text_color', 10);
+             
+             // Tailwind classes
+             $table->string('bg_color_tw')->nullable();
+             $table->string('text_color_tw')->nullable();
+             $table->string('dark_bg_color_tw')->nullable();
+             $table->string('dark_text_color_tw')->nullable();
             $table->timestamps();
         });
     }

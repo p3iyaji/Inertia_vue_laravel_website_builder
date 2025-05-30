@@ -5,14 +5,12 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation, Autoplay, EffectFade } from 'swiper/modules';
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 
-const slides = [
-  '/images/telecom1.jpg',
-  '/images/telecom2.jpg',
-  '/images/telecom3.jpg',
-  '/images/telecom4.jpg'
-];
+const hero = usePage().props.hero;
+console.log(hero);
+
+const slides = hero.images;
 </script>
 
 <template>
@@ -28,11 +26,13 @@ const slides = [
       :speed="3000"  
       class="absolute top-0 left-0 w-full h-full z-0"
     >
-      <SwiperSlide v-for="(img, index) in slides" :key="index">
+      <SwiperSlide v-for="(image, index) in slides" :key="index">
         <div
           class="w-full h-full bg-cover bg-center"
-          :style="{ backgroundImage: `url(${img})` }"
-        ></div>
+          :style="{ backgroundImage: `url('/storage/${image.image}')`, width: '100%',
+    height: '100%'}"
+          ></div>
+          
       </SwiperSlide>
     </Swiper>
 
