@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\NavbarController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\HeroImagesController;
+use App\Http\Controllers\Admin\WelcomePageController;
+use App\Http\Controllers\Admin\WelcomeServeController;
 
 
 use Inertia\Inertia;
@@ -51,6 +53,21 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::post('pagehero/update/{id}', [HeroController::class, 'update'])->name('pagehero.update');
     Route::delete('pagehero/destroy/{id}', [HeroController::class, 'destroy'])->name('pagehero.destroy');
 
+    Route::get('welcomepage', [WelcomePageController::class, 'index'])->name('welcomepage');
+    Route::get('welcomepage.create', [WelcomePageController::class, 'create'])->name('welcomepage.create');
+    Route::post('welcomepage/store', [WelcomePageController::class, 'store'])->name('welcomepage.store');
+    Route::get('welcomepage/edit/{id}', [WelcomePageController::class, 'edit'])->name('welcomepage.edit');
+    Route::post('welcomepage/update/{id}', [WelcomePageController::class, 'update'])->name('welcomepage.update');
+    Route::get('welcomepage/show/{id}', [WelcomePageController::class, 'show'])->name('welcomepage.show');
+    Route::delete('welcomepage/destroy/{id}', [WelcomePageController::class, 'destroy'])->name('welcomepage.destroy');
+
+    //Welcome 3 Services
+    Route::get('welcomepage/services3/create/{id}', [WelcomeServeController::class, 'create'])->name('welcomepage.services3.create');
+    Route::get('welcomepage/services3/{id}', [WelcomeServeController::class, 'show'])->name('welcomepage.services3');
+    Route::post('welcomepage/services3/store/{id}', [WelcomeServeController::class, 'store'])->name('welcomepage.services3.store');
+    Route::post('welcomepage/services3/update/{id}', [WelcomeServeController::class, 'update'])->name('welcomepage.services3.update');
+    Route::delete('welcomepage/services3/destroy/{id}', [WelcomeServeController::class, 'destroy'])->name('welcomepage.services3.destroy');
+
     //Website pages admin
    
 });
@@ -59,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
 });
 
 require __DIR__.'/auth.php';

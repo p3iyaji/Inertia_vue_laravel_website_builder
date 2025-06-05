@@ -44,7 +44,7 @@ onMounted(() => {
                 </div>
                 <!-- 3 of our services -->
                 <div
-                    class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0 dark:bg-gray-800 px-4 py-4 rounded-md">
+                    class="space-y-8 md:grid md:grid-cols-2 bg-white lg:grid-cols-3 md:gap-12 md:space-y-0 dark:bg-gray-800 px-4 py-4 rounded-md">
                     <div
                         class="text-center rounded-full group bg-blue-200 dark:bg-gray-800 p-6 transition-all duration-300 hover:bg-white hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                         <!-- Icon Container -->
@@ -58,6 +58,7 @@ onMounted(() => {
                                     clip-rule="evenodd"></path>
                             </svg>
                         </div>
+
 
                         <!-- Content -->
 
@@ -77,6 +78,7 @@ onMounted(() => {
                             tailored
                             to meet their needs.</p>
                     </div>
+                    <!-- 4services -->
                     <div
                         class="text-center rounded-full group bg-blue-500 dark:bg-gray-800 p-6 transition-all duration-300 hover:bg-white hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                         <!-- Icon Container -->
@@ -127,7 +129,7 @@ onMounted(() => {
 
                         <!-- Content -->
                         <h3
-                            class="mb-2 text-xl font-bold text-yellow-800 dark:text-white transition-all duration-300 group-hover:text-gray-800">
+                            class="mb-2 text-xl font-bold text-yellow-800 dark:text-white transition-all duration-300 group-hover:text-gray-00">
                             Results Oriented</h3>
                         <p
                             class="text-gray-800 font-semibold dark:text-gray-400 transition-all duration-300 group-hover:text-gray-800">

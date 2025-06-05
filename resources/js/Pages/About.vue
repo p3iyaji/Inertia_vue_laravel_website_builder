@@ -83,6 +83,7 @@ import { Head } from '@inertiajs/vue3';
                         Pre-order now </a> -->
                 </div>
             </div>
+            
         </section>
         <!-- Our team -->
          <section class="bg-gray-700 py-4">

@@ -1,8 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-import ContactDrawer from './ContactDrawer.vue';
+import { usePage, router } from '@inertiajs/vue3';
 
 
 const navbar = usePage().props.navbar;
@@ -11,6 +10,10 @@ const currentRoute = computed(() => usePage().url);
 const isActive = (routeName) => {
   return currentRoute.value === routeName;
 };
+
+const getInTouch = () =>{
+  router.get(route('contact'));
+}
 </script>
 
 <template>
@@ -20,22 +23,22 @@ const isActive = (routeName) => {
     `dark:bg-${navbar.dark_bg_color_tw}`,
     `dark:text-${navbar.dark_text_color_tw}`
   ]" :style="{
-      '--bg-color': navbar.bg_color,
-      '--text-color': navbar.text_color,
-      '--dark-bg-color': navbar.dark_bg_color,
-      '--dark-text-color': navbar.dark_text_color
-    }"
+    '--bg-color': navbar.bg_color,
+    '--text-color': navbar.text_color,
+    '--dark-bg-color': navbar.dark_bg_color,
+    '--dark-text-color': navbar.dark_text_color
+  }"
     class="fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 [&:not(:has(*))]:bg-[var(--bg-color)] [&:not(:has(*))]:text-[var(--text-color)] dark:[&:not(:has(*))]:bg-[var(--dark-bg-color)] dark:[&:not(:has(*))]:text-[var(--dark-text-color)]">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
       <Link :href="route('home')" class="flex items-center space-x-2 rtl:space-x-reverse">
       <img :src="`/storage/${navbar.company_logo}`" class="h-14" alt="company Logo">
       <span class="self-center text-2xl font-semibold whitespace-nowrap">{{ navbar.company_name
-        }}</span>
+      }}</span>
       </Link>
       <div class="flex md:order-2 space-x-1 md:space-x-0 rtl:space-x-reverse">
         <!-- make this button I/O -->
-        <button v-if="navbar.get_in_touch === 1" type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <button v-if="navbar.get_in_touch === 1" type="button" @click="getInTouch"
+          class="text-white bg-blue-500 shadow-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           data-drawer-target="drawer-contact" data-drawer-show="drawer-contact" aria-controls="drawer-contact">
           Get In Touch</button>
         <!-- End -->
@@ -50,22 +53,33 @@ const isActive = (routeName) => {
         </button>
       </div>
       <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-        <ul
-          class="flex flex-col justify-center gap-2 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
+        <ul :class="[
+          `bg-${navbar.bg_color_tw}`,
+          `text-${navbar.text_color_tw}`,
+          `dark:bg-${navbar.dark_bg_color_tw}`,
+          `dark:text-${navbar.dark_text_color_tw}`
+        ]" :style="{
+          '--bg-color': navbar.bg_color,
+          '--text-color': navbar.text_color,
+          '--dark-bg-color': navbar.dark_bg_color,
+          '--dark-text-color': navbar.dark_text_color
+        }"
+          class="flex flex-col justify-center gap-2 md:p-0 mt-4 [&:not(:has(*))]:text-[var(--text-color)] font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
           <li>
             <Link :href="route('home')" :class="{
               'block py-2 px-3 rounded-sm md:p-0': true,
-              'text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500': isActive('/'),
-              'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/')
-            }">
+              'text-white bg-blue-700 md:bg-transparent md:text-gray-800 shadow-sm md:dark:text-blue-500': isActive('/'),
+              '[&:not(:has(*))]:text-[var(--text-color)] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/'),
+            }
+              ">
             Home
             </Link>
           </li>
           <li>
             <Link :href="route('about')" :class="{
               'block py-2 px-3 rounded-sm md:p-0': true,
-              'text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500': isActive('/about'),
-              'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/about')
+              'text-white bg-blue-700 md:bg-transparent md:text-gray-800 shadow-sm md:dark:text-blue-500': isActive('/about'),
+              '[&:not(:has(*))]:text-[var(--text-color)] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/about')
             }">
             About
             </Link>
@@ -73,8 +87,8 @@ const isActive = (routeName) => {
           <li>
             <Link :href="route('services')" :class="{
               'block py-2 px-3 rounded-sm md:p-0': true,
-              'text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500': isActive('/services'),
-              'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/services')
+              'text-white bg-blue-700 md:bg-transparent md:text-gray-800 shadow-sm md:dark:text-blue-500': isActive('/services'),
+              '[&:not(:has(*))]:text-[var(--text-color)] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/services')
             }">
             Services
             </Link>
@@ -82,8 +96,8 @@ const isActive = (routeName) => {
           <li>
             <Link :href="route('contact')" :class="{
               'block py-2 px-3 rounded-sm md:p-0': true,
-              'text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500': isActive('/contact'),
-              'text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/contact')
+              'text-white bg-blue-700 md:bg-transparent md:text-gray-800 shadow-sm md:dark:text-blue-500': isActive('/contact'),
+              '[&:not(:has(*))]:text-[var(--text-color)] hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500': !isActive('/contact')
             }">
             Contact
             </Link>
@@ -93,5 +107,5 @@ const isActive = (routeName) => {
     </div>
   </nav>
 
-  <ContactDrawer />
+ 
 </template>

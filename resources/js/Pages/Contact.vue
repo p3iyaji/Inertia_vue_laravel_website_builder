@@ -11,10 +11,10 @@ import { Head } from '@inertiajs/vue3';
         <!-- content -->
          <!-- google map src -->
         <section class="w-full bg-white dark:bg-gray-900">
-            <div class="w-full h-[33vh]">
+            <div class="w-full h-[50vh] mt-6">
                 <iframe class="w-full h-full border-0" loading="lazy" allowfullscreen
                     referrerpolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps/embed/v1/place?q=13+omodayo+owotuga,+off+chevron+drive,+lekki,+lagos+state,+nigeria&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8">
+                    src="https://www.google.com/maps/embed/v1/place?q=19+thirlmere+road+darlington,+United+kingdom&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8">
                 </iframe>
             </div>
         </section>

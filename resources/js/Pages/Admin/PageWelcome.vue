@@ -343,7 +343,7 @@ const deleteNavbar = async (navbar) => {
                                                 class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 <img :src="`/storage/${navbar.company_logo}`" alt="logo image" height="100" width="100"></th>
                                                 <td class="px-4 py-3">{{ navbar.company_name }}</td>
-                                                <td class="px-4 py-3">{{ navbar.get_in_touch === 1 ? 'On' : 'Off' }}</td>
+                                                <td class="px-4 py-3">{{ navbar.get_in_touch }}</td>
                                             <td class="px-4 py-3">{{ navbar.bg_color_tw }}</td>
                                             <td class="px-4 py-3">{{ navbar.text_color_tw }}</td>
                                             <td class="px-4 py-3">{{ navbar.dark_bg_color_tw }}</td>
