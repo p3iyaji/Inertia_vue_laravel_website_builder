@@ -24,10 +24,10 @@ return new class extends Migration
 
             $table->string('team_mem_name_color_tw')->nullable();
             $table->string('team_mem_position_color_tw')->nullable();
-            $table->string('team_mem_description_color_tw')->nullable();
+            $table->string('team_mem_description_color_tw')->nullable();    
             $table->string('team_mem_bg_color_tw')->nullable();
-            $table->unsignedBigInteger('team_mem_id');
-            $table->foreign('team_mem_id')->references('id')->on('abouts')->onDelete('cascade');
+            $table->unsignedBigInteger('about_id');
+            $table->foreign('about_id')->references('id')->on('abouts')->onDelete('cascade');
           
             $table->timestamps();
         });

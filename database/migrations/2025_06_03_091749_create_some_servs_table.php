@@ -15,14 +15,23 @@ return new class extends Migration
             $table->id();
             
             $table->string('sectn_someserv_title')->nullable();
+            $table->string('sectn_someserv_title_color', 10)->nullable();
+
             $table->string('sectn_someserv_description')->nullable();
+            $table->string('sectn_someserv_des_color', 10)->nullable();
+
             $table->string('someservimage')->nullable();
-            $table->string('sectn_someserv_title_bg_color', 10)->nullable();
-            $table->string('sectn_someserv_des_bg_color', 10)->nullable();
-            $table->string('sectn_someserv_title_bg_color_tw')->nullable();
-            $table->string('sectn_someserv_des_bg_color_tw')->nullable();
-            $table->unsignedBigInteger('services_id');
-            $table->foreign('services_id')->references('id')->on('services')->onDelete('cascade');
+
+            $table->string('sectn_someserv_bg_color', 10)->nullable();
+            $table->string('sectn_someserv_dark_bg_color', 10)->nullable();
+
+            $table->string('sectn_someserv_title_color_tw')->nullable();
+            $table->string('sectn_someserv_des_color_tw')->nullable();
+            $table->string('sectn_someserv_bg_color_tw')->nullable();
+            $table->string('sectn_someserv_dark_bg_color_tw')->nullable();
+
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 
             $table->timestamps();
         });

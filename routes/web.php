@@ -11,7 +11,14 @@ use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\HeroImagesController;
 use App\Http\Controllers\Admin\WelcomePageController;
 use App\Http\Controllers\Admin\WelcomeServeController;
-
+use App\Http\Controllers\Admin\WelcomeOurServeController;
+use App\Http\Controllers\Admin\WelcomeClientsController;
+use App\Http\Controllers\Admin\AboutPageController;
+use App\Http\Controllers\Admin\MiviController;
+use App\Http\Controllers\Admin\TeamMemberController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SomeServController;
+use App\Http\Controllers\Admin\AllServController;
 
 use Inertia\Inertia;
 
@@ -68,7 +75,57 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::post('welcomepage/services3/update/{id}', [WelcomeServeController::class, 'update'])->name('welcomepage.services3.update');
     Route::delete('welcomepage/services3/destroy/{id}', [WelcomeServeController::class, 'destroy'])->name('welcomepage.services3.destroy');
 
-    //Website pages admin
+    Route::get('welcomepage/oservices/create/{id}', [WelcomeOurServeController::class, 'create'])->name('welcomepage.oservices.create');
+    Route::get('welcomepage/oservices/{id}', [WelcomeOurServeController::class, 'show'])->name('welcomepage.oservices');
+    Route::post('welcomepage/oservices/store/{id}', [WelcomeOurServeController::class, 'store'])->name('welcomepage.oservices.store');
+    Route::post('welcomepage/oservices/update/{id}', [WelcomeOurServeController::class, 'update'])->name('welcomepage.oservices.update');
+    Route::delete('welcomepage/oservices/destroy/{id}', [WelcomeOurServeController::class, 'destroy'])->name('welcomepage.oservices.destroy');
+
+    Route::get('welcomepage/clients/create/{id}', [WelcomeClientsController::class, 'create'])->name('welcomepage.clients.create');
+    Route::get('welcomepage/clients/{id}', [WelcomeClientsController::class, 'show'])->name('welcomepage.clients');
+    Route::post('welcomepage/clients/store/{id}', [WelcomeClientsController::class, 'store'])->name('welcomepage.clients.store');
+    Route::post('welcomepage/clients/update/{id}', [WelcomeClientsController::class, 'update'])->name('welcomepage.clients.update');
+    Route::delete('welcomepage/clients/destroy/{id}', [WelcomeClientsController::class, 'destroy'])->name('welcomepage.clients.destroy');
+    
+    // About routes and sub routes for relationships
+    Route::get('aboutpage', [AboutPageController::class, 'index'])->name('aboutpage');
+    Route::get('aboutpage/create', [AboutPageController::class, 'create'])->name('aboutpage.create');
+    Route::post('aboutpage/store', [AboutPageController::class, 'store'])->name('aboutpage.store');
+    Route::get('aboutpage/edit/{id}', [AboutPageController::class, 'edit'])->name('aboutpage.edit');
+    Route::post('aboutpage/update/{id}', [AboutPageController::class, 'update'])->name('aboutpage.update');
+    Route::get('aboutpage/show/{id}', [AboutPageController::class, 'show'])->name('aboutpage.show');
+
+    Route::post('aboutpage/update/{id}', [AboutPageController::class, 'update'])->name('aboutpage.update');
+    Route::delete('aboutpage/destroy/{id}', [AboutPageController::class, 'destroy'])->name('aboutpage.destroy');
+
+    Route::get('aboutpage/teammembers/create/{id}', [TeamMemberController::class, 'create'])->name('aboutpage.teammembers.create');
+    Route::post('aboutpage/teammembers/store/{id}', [TeamMemberController::class, 'store'])->name('aboutpage.teammembers.store');
+    Route::post('aboutpage/teammembers/update/{id}', [TeamMemberController::class, 'update'])->name('aboutpage.teammembers.update');
+    Route::delete('aboutpage/teammembers/destroy/{id}', [TeamMemberController::class, 'destroy'])->name('aboutpage.teammembers.destroy');
+
+    Route::get('aboutpage/missionvision/create/{id}', [MiviController::class, 'create'])->name('aboutpage.missionvision.create');
+    Route::post('aboutpage/missionvision/store/{id}', [MiviController::class, 'store'])->name('aboutpage.missionvision.store');
+    Route::post('aboutpage/missionvision/update/{id}', [MiviController::class, 'update'])->name('aboutpage.missionvision.update');
+    Route::delete('aboutpage/missionvision/destroy/{id}', [MiviController::class, 'destroy'])->name('aboutpage.missionvision.destroy');
+
+    //Services Route
+    Route::get('servicepage', [ServiceController::class, 'index'])->name('servicepage');
+    Route::get('servicepage/create', [ServiceController::class, 'create'])->name('servicepage.create');
+    Route::post('servicepage/store', [ServiceController::class, 'store'])->name('servicepage.store');
+    Route::get('servicepage/show/{id}', [ServiceController::class, 'show'])->name('servicepage.show');
+    Route::get('servicepage/edit/{id}', [ServiceController::class, 'edit'])->name('servicepage.edit');
+    Route::post('servicepage/update/{id}', [ServiceController::class, 'update'])->name('servicepage.update');
+    Route::delete('servicepage/destroy/{id}', [ServiceController::class, 'destroy'])->name('servicepage.destroy');
+    
+    Route::get('servicepage/someserv/create/{id}', [SomeServController::class, 'create'])->name('servicepage.someserv.create');
+    Route::post('servicepage/someserv/store/{id}', [SomeServController::class, 'store'])->name('servicepage.someserv.store');
+    Route::post('servicepage/someserv/update/{id}', [SomeServController::class, 'update'])->name('servicepage.someserv.update');
+    Route::delete('servicepage/someserv/destroy/{id}', [SomeServController::class, 'destroy'])->name('servicepage.someserv.destroy');
+    
+    Route::get('servicepage/allserv/create/{id}', [AllServController::class, 'create'])->name('servicepage.allserv.create');
+    Route::post('servicepage/allserv/store/{id}', [AllServController::class, 'store'])->name('servicepage.allserv.store');
+    Route::post('servicepage/allserv/update/{id}', [AllServController::class, 'update'])->name('servicepage.allserv.update');
+    Route::delete('servicepage/allserv/destroy/{id}', [AllServController::class, 'destroy'])->name('servicepage.allserv.destroy');
    
 });
 
@@ -78,5 +135,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
-
+ 
 require __DIR__.'/auth.php';

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('welcome_other_servs', function (Blueprint $table) {
+        Schema::create('welcome_our_servs', function (Blueprint $table) {
             $table->id();
             $table->string('sectn_oserv_title')->nullable();
             $table->string('sectn_oserv_bg_color', 10)->nullable();
@@ -41,6 +41,8 @@ return new class extends Migration
             $table->string('sectn_oservh_description_color_tw')->nullable();
             $table->string('sectn_oservd_description_color_tw')->nullable();
             $table->string('sectn_oservdh_description_color_tw')->nullable();
+            $table->unsignedBigInteger('welcome_id');
+            $table->foreign('welcome_id')->references('id')->on('welcomes')->onDelete('cascade');
 
            $table->timestamps();
         });
@@ -51,6 +53,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('welcome_other_servs');
+        Schema::dropIfExists('welcome_our_servs');
     }
 };

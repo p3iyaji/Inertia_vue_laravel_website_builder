@@ -9,23 +9,22 @@ class About extends Model
     protected $fillable = [
         'sectn_header',
             'sectn_header_title',
-            'sectn_header_title_color',
             'sectn_header_description',
+
+            'sectn_header_title_color',
             'sectn_header_description_color',
             'sectn_header_bg_color',
 
             'sectn_mivi',
-            'sectn_mivi_title',
-            'sectn_mivi_title_color',
-            'sectn_mivi_description',
-            'sectn_mivi_description_color',
+           
 
             'sectn_slogan',
+            'sectn_slogan_bg_color',
+
             'sectn_slogan_caption',
             'sectn_slogan_subcaption',
             'slogan_image',
             'sectn_slogan_caption_color',
-            'sectn_slogan_bg_color',
             'sectn_slogan_subcaption_color',
 
             'sectn_team',
@@ -35,6 +34,7 @@ class About extends Model
             'team_caption_color',
             'team_bg_color',
             'sectn_team_mem',
+
             'sectn_header_title_color_tw',
             'sectn_header_description_color_tw',
             'sectn_header_bg_color_tw',
@@ -51,5 +51,10 @@ class About extends Model
     public function teammembers()
     {
         $this->hasMany(TeamMember::class);
+    }
+
+    public function mivis()
+    {
+        $this->hasMany(Mivi::class);
     }
 }

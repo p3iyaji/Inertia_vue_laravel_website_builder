@@ -16,15 +16,12 @@ return new class extends Migration
             $table->boolean('sectn_header')->default(0);
             $table->string('sectn_header_title')->nullable();
             $table->string('sectn_header_title_color', 10)->nullable();
-            $table->string('sectn_header_description', 10)->nullable();
+            $table->string('sectn_header_description')->nullable();
             $table->string('sectn_header_description_color', 10)->nullable();
             $table->string('sectn_header_bg_color', 10)->nullable();
 
             $table->boolean('sectn_mivi')->default(0);
-            $table->string('sectn_mivi_title')->nullable();
-            $table->string('sectn_mivi_title_color', 10)->nullable();
-            $table->string('sectn_mivi_description')->nullable();
-            $table->string('sectn_mivi_description_color', 10)->nullable();
+
 
             $table->boolean('sectn_slogan')->default(0);
             $table->string('sectn_slogan_caption')->nullable();
@@ -47,8 +44,6 @@ return new class extends Migration
             $table->string('sectn_header_title_color_tw')->nullable();
             $table->string('sectn_header_description_color_tw')->nullable();
             $table->string('sectn_header_bg_color_tw')->nullable();
-            $table->string('sectn_mivi_title_color_tw')->nullable();
-            $table->string('sectn_mivi_description_color_tw')->nullable();
             $table->string('sectn_slogan_caption_color_tw')->nullable();
             $table->string('sectn_slogan_bg_color_tw')->nullable();
             $table->string('sectn_slogan_subcaption_color_tw')->nullable();

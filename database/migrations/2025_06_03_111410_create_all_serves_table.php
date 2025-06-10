@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('allserve_image')->nullable();
             $table->string('allserve_title_color', 10)->nullable();
             $table->string('allserve_description_color', 10)->nullable();
+
             $table->string('allserve_title_color_tw')->nullable();
             $table->string('allserve_description_color_tw')->nullable();
+            
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->timestamps();

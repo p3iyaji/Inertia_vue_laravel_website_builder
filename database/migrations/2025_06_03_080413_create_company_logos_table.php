@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('company_logos', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('logos')->nullable();
+            $table->string('logo')->nullable();
             $table->unsignedBigInteger('welcome_id');
             $table->foreign('welcome_id')->references('id')->on('welcomes')->onDelete('cascade');
             $table->timestamps();

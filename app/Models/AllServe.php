@@ -12,8 +12,10 @@ class AllServe extends Model
         'allserve_image',
         'allserve_title_color',
         'allserve_description_color',
+        
         'allserve_title_color_tw',
         'allserve_description_color_tw',
+
         'service_id',
 
     ];

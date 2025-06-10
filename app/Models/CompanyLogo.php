@@ -8,7 +8,7 @@ class CompanyLogo extends Model
 {
     protected $fillable = [
       'name',
-      'logos',
+      'logo',
       'welcome_id',       
     ];
 
