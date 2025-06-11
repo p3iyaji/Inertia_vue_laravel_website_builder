@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    protected $table = 'services';
+
     protected $fillable =[
         'sectn_services',
             'sectn_services_title',
@@ -42,11 +44,11 @@ class Service extends Model
 
     public function someservs()
     {
-        $this->hasMany(SomeServ::class);
+        return $this->hasMany(SomeServ::class); 
     }
-
+    
     public function allserves()
     {
-        $this->hasMany(AllServe::class);
+        return $this->hasMany(AllServe::class); 
     }
 }

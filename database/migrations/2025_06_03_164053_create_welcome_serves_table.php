@@ -32,9 +32,9 @@ return new class extends Migration
             $table->string('sectn_3_title_color_tw')->nullable();
             $table->string('sectn_3ghover_title_color_tw')->nullable();
             $table->string('sectn_3darkghover_title_color_tw')->nullable();
-            $table->string('sectn_3ghover_description_color_tw', 10)->nullable();
-            $table->string('sectn_3dark_description_color_tw', 10)->nullable();
-            $table->string('sectn_3darkhover_description_color_tw', 10)->nullable();
+            $table->string('sectn_3ghover_description_color_tw')->nullable();
+            $table->string('sectn_3dark_description_color_tw')->nullable();
+            $table->string('sectn_3darkhover_description_color_tw')->nullable();
             $table->string('sectn_3_bg_color_tw')->nullable();
             $table->string('sectn_3_dark_bg_color_tw')->nullable();
         

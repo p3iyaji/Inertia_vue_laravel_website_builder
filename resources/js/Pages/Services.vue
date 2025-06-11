@@ -1,6 +1,8 @@
 <script setup>
 import SiteLayout from './Layouts/SiteLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+
+const service = usePage().props.service;
 
 </script>
 
@@ -14,8 +16,8 @@ import { Head } from '@inertiajs/vue3';
         <section class="dark:bg-gray-900 mb-0 mt-5 bg-white">
             <div class="px-4 mx-auto max-w-screen-xl sm:pt-16 lg:px-6">
 
-                <div class="flex justify-between">
-                    <h1 class="text-4xl font-bold">Our Services</h1>
+                <div :class="[`text-${service.sectn_services_title_color_tw}`] [`bg-${service.sectn_header_bg_color_tw}`]" class="flex justify-between">
+                    <h1 class="text-4xl font-bold">{{ service.sectn_services_title }}</h1>
                 </div>
 
             </div>

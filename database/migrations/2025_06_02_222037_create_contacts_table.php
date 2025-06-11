@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('phone_color', 10)->nullable();
 
-            $table->string('office_block_bg_color_tw', 10)->nullable();
+            $table->string('office_block_bg_color_tw')->nullable();
             $table->string('office_title_color_tw')->nullable();
             $table->string('email_color_tw')->nullable();
             $table->string('phone_color_tw')->nullable();

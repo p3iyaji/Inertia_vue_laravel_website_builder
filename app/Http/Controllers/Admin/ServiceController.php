@@ -140,9 +140,80 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, StoreServiceRequest $validated, string $id)
     {
-        //
+        $validatedData = $validated->validated();
+
+        $converter = new ColorConverter();
+
+        if ($request->hasFile('sloganImage')) {
+            $file = $request->file('sloganImage');
+            $path = $file->store('services', 'public');
+            $validatedData['sloganImage'] = $path;
+
+            $service = Service::findOrFail($id);
+            $service->update([
+                'sectn_services' => $validatedData['sectn_services'],
+                'sectn_services_title' => $validatedData['sectn_services_title'],
+                'sectn_services_title_color' => $validatedData['sectn_services_title_color'],
+                'sectn_header_bg_color' => $validatedData['sectn_header_bg_color'],
+                'sectn_someserv' => $validatedData['sectn_someserv'],
+                'sectn_someserve_bg_color' => $validatedData['sectn_someserve_bg_color'],
+                'sectn_someserve_dark_bg_color' => $validatedData['sectn_someserve_dark_bg_color'],
+                'sectn_servslogan' => $validatedData['sectn_servslogan'],
+                'sloganImage' => $path,
+                'caption_title' => $validatedData['caption_title'],
+                'caption_color' => $validatedData['caption_color'],
+                'slogan' => $validatedData['slogan'],
+                'slogan_color' => $validatedData['slogan_color'],
+                'slogan_bg_color' => $validatedData['slogan_bg_color'],
+                'sectn_allserve' => $validatedData['sectn_allserve'],
+                'allserve_bg_color' => $validatedData['allserve_bg_color'],
+
+                'sectn_services_title_color_tw' => $this->getTailwindClass($validatedData['sectn_services_title_color'], $converter),
+                'sectn_header_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_header_bg_color'], $converter),
+                'sectn_someserve_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_someserve_bg_color'], $converter),
+                'sectn_someserve_dark_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_someserve_dark_bg_color'], $converter),
+                'sectn_servslogan_tw' => $this->getTailwindClass($validatedData['sectn_servslogan'], $converter),
+                'caption_color_tw' => $this->getTailwindClass($validatedData['caption_color'], $converter),
+                'slogan_color_tw' => $this->getTailwindClass($validatedData['slogan_color'], $converter),
+                'slogan_bg_color_tw' => $this->getTailwindClass($validatedData['slogan_bg_color'], $converter),
+                'sectn_allserve_tw' => $this->getTailwindClass($validatedData['sectn_allserve'], $converter),
+                'allserve_bg_color_tw' => $this->getTailwindClass($validatedData['allserve_bg_color'], $converter),
+            ]);
+
+        } else {
+            Service::update([
+                'sectn_services' => $validatedData['sectn_services'],
+                'sectn_services_title' => $validatedData['sectn_services_title'],
+                'sectn_services_title_color' => $validatedData['sectn_services_title_color'],
+                'sectn_header_bg_color' => $validatedData['sectn_header_bg_color'],
+                'sectn_someserv' => $validatedData['sectn_someserv'],
+                'sectn_someserve_bg_color' => $validatedData['sectn_someserve_bg_color'],
+                'sectn_someserve_dark_bg_color' => $validatedData['sectn_someserve_dark_bg_color'],
+                'sectn_servslogan' => $validatedData['sectn_servslogan'],
+                'caption_title' => $validatedData['caption_title'],
+                'caption_color' => $validatedData['caption_color'],
+                'slogan' => $validatedData['slogan'],
+                'slogan_color' => $validatedData['slogan_color'],
+                'slogan_bg_color' => $validatedData['slogan_bg_color'],
+                'sectn_allserve' => $validatedData['sectn_allserve'],
+                'allserve_bg_color' => $validatedData['allserve_bg_color'],
+
+                'sectn_services_title_color_tw' => $this->getTailwindClass($validatedData['sectn_services_title_color'], $converter),
+                'sectn_header_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_header_bg_color'], $converter),
+                'sectn_someserve_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_someserve_bg_color'], $converter),
+                'sectn_someserve_dark_bg_color_tw' => $this->getTailwindClass($validatedData['sectn_someserve_dark_bg_color'], $converter),
+                'sectn_servslogan_tw' => $this->getTailwindClass($validatedData['sectn_servslogan'], $converter),
+                'caption_color_tw' => $this->getTailwindClass($validatedData['caption_color'], $converter),
+                'slogan_color_tw' => $this->getTailwindClass($validatedData['slogan_color'], $converter),
+                'slogan_bg_color_tw' => $this->getTailwindClass($validatedData['slogan_bg_color'], $converter),
+                'sectn_allserve_tw' => $this->getTailwindClass($validatedData['sectn_allserve'], $converter),
+                'allserve_bg_color_tw' => $this->getTailwindClass($validatedData['allserve_bg_color'], $converter),
+            ]);
+        }
+
+        return to_route('servicepage');
     }
 
     /**

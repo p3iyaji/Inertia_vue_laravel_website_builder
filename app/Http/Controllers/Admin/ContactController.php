@@ -136,6 +136,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
+     
         $validated = $request->validate([
             'src' => 'required|string',
             'main_section' => 'nullable|boolean',

@@ -5,6 +5,7 @@ import { usePage, useForm, router } from '@inertiajs/vue3';
 
 const errors = usePage().props.errors;
 const contactId = usePage().props.contact.id;
+const contact = usePage().props.contact;
 const existingContact = usePage().props.contact || [];
 
 // Initialize form with existing data or defaults
@@ -29,9 +30,9 @@ const goBack = () => {
 const updateContact = (contactId) => {
     // Use PUT for update if we have an existing record, POST for create
     const method = 'post';
-    const routeName = 'contactpage.update';
+   // const routeName = 'contactpage.update';
 
-    form[method](route(routeName, contactId), {
+    router.post(route('contactpage.update', contactId), form, {
         preserveScroll: true,
         onSuccess: () => {
             Swal.fire({
@@ -145,7 +146,7 @@ const updateContact = (contactId) => {
                         </div>
                         
                         <div class="flex justify-end mt-4">
-                            <button @click="updateContact" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <button @click="updateContact(contact.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                Update Contact
                             </button>
                         </div>

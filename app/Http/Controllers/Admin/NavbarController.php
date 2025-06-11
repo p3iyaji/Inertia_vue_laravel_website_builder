@@ -15,6 +15,7 @@ class NavbarController extends Controller
         $navbars = Navbar::orderBy('created_at', 'desc')->get();
         return Inertia::render('Admin/Settings/PageNavbar', ['navbars' => $navbars]);
     }
+    
 
     public function store(Request $request)
     {
