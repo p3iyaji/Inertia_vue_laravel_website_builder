@@ -20,16 +20,16 @@ const goBack = () => {
 }
 
 const form = useForm({
-        sectn_services: service.sectn_services,
+        sectn_services: !!service.sectn_services,
         sectn_services_title: service.sectn_services_title,
         sectn_services_title_color: service.sectn_services_title_color, 
         sectn_header_bg_color: service.sectn_header_bg_color,
 
-        sectn_someserv: service.sectn_someserv,
+        sectn_someserv: !!service.sectn_someserv,
         sectn_someserve_bg_color: service.sectn_someserve_bg_color,
         sectn_someserve_dark_bg_color: service.sectn_someserve_dark_bg_color,
             
-        sectn_servslogan: service.sectn_servslogan,
+        sectn_servslogan: !!service.sectn_servslogan,
         sloganimage: service.sloganimage,
 
         caption_title: service.caption_title,
@@ -40,7 +40,7 @@ const form = useForm({
 
         slogan_bg_color: service.slogan_bg_color, 
 
-        sectn_allserve: service.sectn_allserve,
+        sectn_allserve: !!service.sectn_allserve,
         allserve_bg_color: service.allserve_bg_color,
 
 })
@@ -110,8 +110,8 @@ const addSomeServices = (service) => {
     router.visit(route('servicepage.someserv.create',service.id));
 }
 
-const addTeamMember = (service) => {
-    router.visit(route('servicepage.teammembers.create',service.id));
+const addAllServices = (service) => {
+    router.visit(route('servicepage.allserv.create',service.id));
 }
 
 

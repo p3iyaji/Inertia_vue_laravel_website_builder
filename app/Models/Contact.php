@@ -15,10 +15,14 @@ class Contact extends Model
             'address',
             'address_color',
             'email',
-            'phone',
             'email_color',
+            'phone',
             'phone_color',
-            'office_block_bg_color',
-            'office_title_color',
+            
+            'office_block_bg_color_tw',
+            'office_title_color_tw',
+            'email_color_tw',
+            'phone_color_tw',
+            'address_color_tw',
     ];
 }

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SomeServController;
 use App\Http\Controllers\Admin\AllServController;
+use App\Http\Controllers\Admin\ContactController;
 
 use Inertia\Inertia;
 
@@ -127,6 +128,13 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::post('servicepage/allserv/update/{id}', [AllServController::class, 'update'])->name('servicepage.allserv.update');
     Route::delete('servicepage/allserv/destroy/{id}', [AllServController::class, 'destroy'])->name('servicepage.allserv.destroy');
    
+    // Routes for contact
+    Route::get('contactpage', [ContactController::class, 'index'])->name('contactpage');
+    Route::get('contactpage/create', [ContactController::class, 'create'])->name('contactpage.create');
+    Route::post('contactpage/store', [ContactController::class, 'store'])->name('contactpage.store');
+    Route::get('contactpage/edit/{id}', [ContactController::class, 'edit'])->name('contactpage.edit');
+    Route::post('contactpage/update/{id}', [ContactController::class, 'update'])->name('contactpage.update');
+    Route::delete('contactpage/destroy/{id}', [ContactController::class, 'destroy'])->name('contactpage.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\SomeServ;
 use App\Services\ColorConverter;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class SomeServController extends Controller
@@ -69,12 +70,11 @@ class SomeServController extends Controller
 
         $converter = new ColorConverter();
 
-        $service = Service::findOrFail($request->service_id);
+        $service = Service::findOrFail($id);
 
         foreach ($validated['someServs'] as $someServ) {
             $uniqueName = time().'-'. Str::random(10) . '.'. $someServ['someservimage']->getClientOriginalExtension();
             $path = $someServ['someservimage']->storeAs('service/someserv', $uniqueName, 'public'); 
-
 
 
             SomeServ::create([
@@ -117,7 +117,7 @@ class SomeServController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         //
     }
@@ -127,8 +127,103 @@ class SomeServController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'someServs.*.id' => 'nullable|exists:some_servs,id', // Add validation for ID
+            'someServs.*.sectn_someserv_title' => 'nullable|string|max:255',
+            'someServs.*.sectn_someserv_title_color' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'someServs.*.sectn_someserv_description' => 'nullable|string|max:255',
+            'someServs.*.sectn_someserv_des_color' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'someServs.*.sectn_someserv_bg_color' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'someServs.*.sectn_someserv_dark_bg_color' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
+                    !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {
+                    $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
+                }
+            }],
+            'someServs.*.someservimage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5048',
+        ]);
+    
+        $converter = new ColorConverter();
+        $service = Service::findOrFail($id);
+    
+        foreach ($validated['someServs'] as $inputData) {
+            if (!empty($inputData['id'])) {
+                // Update existing service
+                $someServ = SomeServ::find($inputData['id']);
+                
+                if ($someServ) {
+                    $updateData = [
+                        'sectn_someserv_title' => $inputData['sectn_someserv_title'] ?? null,
+                        'sectn_someserv_title_color' => $inputData['sectn_someserv_title_color'] ?? null,
+                        'sectn_someserv_description' => $inputData['sectn_someserv_description'] ?? null,
+                        'sectn_someserv_des_color' => $inputData['sectn_someserv_des_color'] ?? null,
+                        'sectn_someserv_bg_color' => $inputData['sectn_someserv_bg_color'] ?? null,
+                        'sectn_someserv_dark_bg_color' => $inputData['sectn_someserv_dark_bg_color'] ?? null,
+                        'sectn_someserv_title_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_title_color'] ?? null, $converter),
+                        'sectn_someserv_des_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_des_color'] ?? null, $converter),
+                        'sectn_someserv_bg_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_bg_color'] ?? null, $converter),
+                        'sectn_someserv_dark_bg_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_dark_bg_color'] ?? null, $converter),
+                    ];
+    
+                    // Handle image update if provided
+                    if (isset($inputData['someservimage'])) {
+                        // Delete old image if exists
+                        if ($someServ->someservimage) {
+                            Storage::disk('public')->delete($someServ->someservimage);
+                        }
+                        
+                        $uniqueName = time().'-'. Str::random(10) . '.'. $inputData['someservimage']->getClientOriginalExtension();
+                        $path = $inputData['someservimage']->storeAs('service/someserv', $uniqueName, 'public');
+                        $updateData['someservimage'] = $path;
+                    }
+    
+                    $someServ->update($updateData);
+                }
+            } else {
+                // Create new service
+                $createData = [
+                    'service_id' => $service->id,
+                    'sectn_someserv_title' => $inputData['sectn_someserv_title'] ?? null,
+                    'sectn_someserv_title_color' => $inputData['sectn_someserv_title_color'] ?? null,
+                    'sectn_someserv_description' => $inputData['sectn_someserv_description'] ?? null,
+                    'sectn_someserv_des_color' => $inputData['sectn_someserv_des_color'] ?? null,
+                    'sectn_someserv_bg_color' => $inputData['sectn_someserv_bg_color'] ?? null,
+                    'sectn_someserv_dark_bg_color' => $inputData['sectn_someserv_dark_bg_color'] ?? null,
+                    'sectn_someserv_title_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_title_color'] ?? null, $converter),
+                    'sectn_someserv_des_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_des_color'] ?? null, $converter),
+                    'sectn_someserv_bg_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_bg_color'] ?? null, $converter),
+                    'sectn_someserv_dark_bg_color_tw' => $this->getTailwindClass($inputData['sectn_someserv_dark_bg_color'] ?? null, $converter),
+                ];
+    
+                if (isset($inputData['someservimage'])) {
+                    $uniqueName = time().'-'. Str::random(10) . '.'. $inputData['someservimage']->getClientOriginalExtension();
+                    $path = $inputData['someservimage']->storeAs('service/someserv', $uniqueName, 'public');
+                    $createData['someservimage'] = $path;
+                }
+    
+                SomeServ::create($createData);
+            }
+        }
+    
+        return to_route('servicepage.show', $service->id)->with('success', 'SomeServs updated successfully');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
