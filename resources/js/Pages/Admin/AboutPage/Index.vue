@@ -11,11 +11,13 @@ onMounted(() => {
     initFlowbite();
 })
 
+
 const props = defineProps({
     errors: Object,
     flash: Object,
     abouts: Array
 })
+
 
 const showModal = ref(false);
 const isEditing = ref(false);

@@ -77,8 +77,9 @@ class Welcome extends Model
         return $this->hasMany(WelcomeOurServe::class);
     }
 
-    public function companylogos() 
+    public function companylogos()
     {
-        $this->hasMany(CompanyLogo::class);
+        return $this->hasMany(CompanyLogo::class);
     }
+
 }

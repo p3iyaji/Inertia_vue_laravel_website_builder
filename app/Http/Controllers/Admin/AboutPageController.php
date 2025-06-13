@@ -7,6 +7,7 @@ use App\Services\ColorConverter;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\About;
+
 use Inertia\Inertia;
 
 class AboutPageController extends Controller

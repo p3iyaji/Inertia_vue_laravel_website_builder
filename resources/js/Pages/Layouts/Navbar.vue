@@ -28,7 +28,7 @@ const getInTouch = () =>{
     '--dark-bg-color': navbar.dark_bg_color,
     '--dark-text-color': navbar.dark_text_color
   }"
-    class="fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600 [&:not(:has(*))]:bg-[var(--bg-color)] [&:not(:has(*))]:text-[var(--text-color)] dark:[&:not(:has(*))]:bg-[var(--dark-bg-color)] dark:[&:not(:has(*))]:text-[var(--dark-text-color)]">
+    class="fixed w-full z-20 top-0 start-0 [&:not(:has(*))]:bg-[var(--bg-color)] [&:not(:has(*))]:text-[var(--text-color)] dark:[&:not(:has(*))]:bg-[var(--dark-bg-color)] dark:[&:not(:has(*))]:text-[var(--dark-text-color)]">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
       <Link :href="route('home')" class="flex items-center space-x-2 rtl:space-x-reverse">
       <img :src="`/storage/${navbar.company_logo}`" class="h-14" alt="company Logo">

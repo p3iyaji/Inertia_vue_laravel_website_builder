@@ -2,26 +2,39 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { ref, onMounted } from 'vue';
 import { usePage, useForm, router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2';
 
 const errors = usePage().props.errors;
 const aboutId = usePage().props.about.id;
 const existingMivision = usePage().props.mivi || [];
 
+// Initialize form with useForm
+const form = useForm({
+    mission_title: '',
+    mission_title_color: '#000000',
+    mission_description: '',
+    mission_description_color: '#000000',
+    vision_title: '',
+    vision_title_color: '#000000',
+    vision_description: '',
+    vision_description_color: '#000000',
+});
 
-
-// Get the first Mivi record if it exist
+// Check if we have existing data
 const existingMivi = existingMivision.length > 0 ? existingMivision[0] : null;
 
-// Initialize form with existing data or defaults
-const form = useForm({
-    mission_title: existingMivi.mission_title || '',
-    mission_title_color: existingMivi?.mission_title_color || '#000000',
-    mission_description: existingMivi?.mission_description || '',
-    mission_description_color: existingMivi?.mission_description_color || '#000000',
-    vision_title: existingMivi?.vision_title || '',
-    vision_title_color: existingMivi?.vision_title_color || '#000000',
-    vision_description: existingMivi?.vision_description || '',
-    vision_description_color: existingMivi?.vision_description_color || '#000000',
+// Populate form with existing data if available
+onMounted(() => {
+    if (existingMivi) {
+        form.mission_title = existingMivi.mission_title || '';
+        form.mission_title_color = existingMivi.mission_title_color || '#000000';
+        form.mission_description = existingMivi.mission_description || '';
+        form.mission_description_color = existingMivi.mission_description_color || '#000000';
+        form.vision_title = existingMivi.vision_title || '';
+        form.vision_title_color = existingMivi.vision_title_color || '#000000';
+        form.vision_description = existingMivi.vision_description || '';
+        form.vision_description_color = existingMivi.vision_description_color || '#000000';
+    }
 });
 
 const goBack = () => {
@@ -29,34 +42,36 @@ const goBack = () => {
 };
 
 const saveMissionVision = () => {
-    // Use PUT for update if we have an existing record, POST for create
-    const method = existingMivi ? 'put' : 'post';
-    const routeName = existingMivi ? 'aboutpage.missionvision.update' : 'aboutpage.missionvision.store';
-    const routeParams = existingMivi ? [aboutId, existingMivi.id] : [aboutId];
+    const isUpdate = !!existingMivi;
+    const routeName = isUpdate ? 'aboutpage.missionvision.update' : 'aboutpage.missionvision.store';
+    const routeParams = isUpdate ? [aboutId, existingMivi.id] : [aboutId];
 
-    form[method](route(routeName, ...routeParams), {
-        preserveScroll: true,
-        onSuccess: () => {
-            Swal.fire({
-                toast: true,
-                icon: 'success',
-                position: 'top-end',
-                showConfirmation: false,
-                timer: 3000,
-                title: 'Mission & Vision saved successfully'
-            });
-        },
-        onError: (errors) => {
-            Swal.fire({
-                toast: true,
-                icon: 'error',
-                position: 'top-end',
-                showConfirmation: false,
-                timer: 3000,
-                title: 'Error saving mission & vision'
-            });
+    form[isUpdate ? 'put' : 'post'](
+        route(routeName, ...routeParams),
+        {
+            preserveScroll: true,
+            onSuccess: () => {
+                Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    position: 'top-end',
+                    showConfirmation: false,
+                    timer: 3000,
+                    title: `Mission & Vision ${isUpdate ? 'updated' : 'saved'} successfully`
+                });
+            },
+            onError: (errors) => {
+                Swal.fire({
+                    toast: true,
+                    icon: 'error',
+                    position: 'top-end',
+                    showConfirmation: false,
+                    timer: 3000,
+                    title: `Error ${isUpdate ? 'updating' : 'saving'} mission & vision`
+                });
+            }
         }
-    });
+    );
 };
 </script>
 

@@ -34,6 +34,7 @@ class WelcomePageController extends Controller
      */
     public function store(Request $request, StoreWelcomepageRequest $validated)
     {
+
         $validatedData = $validated->validated();
 
         $converter = new ColorConverter();
@@ -235,6 +236,7 @@ class WelcomePageController extends Controller
                
         
                 $welcome->sectn_services = $validatedData['sectn_services'];
+                $welcome->services_image = $validatedData['services_image'];
                 $welcome->sectn_serv_title = $validatedData['sectn_serv_title'];
                 $welcome->sectn_serv_description = $validatedData['sectn_serv_description'];
                 $welcome->sectn_serv_bg_color = $validatedData['sectn_serv_bg_color'];

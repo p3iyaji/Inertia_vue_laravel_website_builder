@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class About extends Model
 {
+    protected $table = 'abouts';
+
     protected $fillable = [
         'sectn_header',
             'sectn_header_title',
@@ -48,13 +50,15 @@ class About extends Model
             'team_bg_color_tw',
     ];
 
-    public function teammembers()
-    {
-        $this->hasMany(TeamMember::class);
-    }
-
-    public function mivis()
-    {
-        $this->hasMany(Mivi::class);
-    }
+  public function teammembers()
+{
+    return $this->hasMany(TeamMember::class);
 }
+
+public function mivis()
+{
+    return $this->hasMany(MiVi::class);
+}
+
+}
+

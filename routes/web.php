@@ -106,7 +106,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
 
     Route::get('aboutpage/missionvision/create/{id}', [MiviController::class, 'create'])->name('aboutpage.missionvision.create');
     Route::post('aboutpage/missionvision/store/{id}', [MiviController::class, 'store'])->name('aboutpage.missionvision.store');
-    Route::post('aboutpage/missionvision/update/{id}', [MiviController::class, 'update'])->name('aboutpage.missionvision.update');
+    Route::put('aboutpage/missionvision/update/{id}', [MiviController::class, 'update'])->name('aboutpage.missionvision.update');
     Route::delete('aboutpage/missionvision/destroy/{id}', [MiviController::class, 'destroy'])->name('aboutpage.missionvision.destroy');
 
     //Services Route

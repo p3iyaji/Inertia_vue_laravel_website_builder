@@ -127,7 +127,7 @@ class AllServController extends Controller
                     $fail('The '.$attribute.' must be a valid HEX color or Tailwind color class.');
                 }
             }],
-            'allServs.*.allserve_description' => 'nullable|string|max:255',
+            'allServs.*.allserve_description' => 'nullable|string',
             'allServs.*.allserve_description_color' => ['nullable', 'string', function ($attribute, $value, $fail) {
                 if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) && 
                     !preg_match('/^[a-z]+-\d{2,3}$/', $value)) {

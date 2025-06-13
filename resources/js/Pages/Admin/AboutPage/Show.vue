@@ -13,6 +13,7 @@ onMounted(() => {
 const about = usePage().props.about;
 
 
+
 const errors = usePage().props.errors;
 
 const goBack = () => {
@@ -86,17 +87,39 @@ const deleteImage = () => {
 const saveUpdate = () => {
     // Convert form to FormData to handle file uploads
     const formData = new FormData();
+    for (const key in form.data()) {
+        if (key != 'slogan_image') {
+            const value = form[key];
+            if (typeof value === 'boolean') {
+                formData.append(key, value ? '1' : '0');
+            } else if (value !== null && value !== undefined) {
+                formData.append(key, value);
+            }
+        }
+    }
 
-    // Append all form fields
-    formData.append('form',form);
+// Handle file upload if new image selected
+    if (previewImage.value && form.slogan_image instanceof File) {
+        formData.append('slogan_image', form.slogan_image);
+    }
+    
+    // Handle image removal if existing image was deleted
+    if (!slogan_image.value && about.slogan_image) {
+        formData.append('remove_image', '1');
+    }
+    
 
     // Submit the form
-    form.post(route('aboutpage.update',about.id), {
-        data: formData,
-        onSuccess: (page) => {
-            const message = page.props.flash?.success || 'About Page updated successfully';
-            Swal.fire({
-                toast: true,
+    router.post(route('aboutpage.update',about.id), 
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onSuccess: (page) => {
+                const message = page.props.flash?.success || 'About Page updated successfully';
+                Swal.fire({
+                    toast: true,
                 icon: 'success',
                 position: 'top-end',
                 showConfirmation: false,

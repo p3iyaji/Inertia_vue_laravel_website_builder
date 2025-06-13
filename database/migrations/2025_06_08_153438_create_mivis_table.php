@@ -15,18 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('mission_title')->nullable();
             $table->string('mission_title_color', 10)->nullable();
-            $table->string('mission_description')->nullable();
+            $table->longtext('mission_description')->nullable();
             $table->string('mission_description_color', 10)->nullable();
             $table->string('mission_title_color_tw')->nullable();
             $table->string('mission_description_color_tw')->nullable();
             $table->string('vision_title')->nullable();
             $table->string('vision_title_color', 10)->nullable();
-            $table->string('vision_description')->nullable();
+            $table->longtext('vision_description')->nullable();
             $table->string('vision_description_color', 10)->nullable();
             $table->string('vision_title_color_tw')->nullable();
             $table->string('vision_description_color_tw')->nullable();
 
-            $table->foreignId('about_id')->references('id')->on('abouts')->cascadeOnDelete();
+            $table->unsignedBigInteger('about_id');
+            $table->foreign('about_id')->references('id')->on('abouts')->onDelete('cascade');
 
             $table->timestamps();
         });

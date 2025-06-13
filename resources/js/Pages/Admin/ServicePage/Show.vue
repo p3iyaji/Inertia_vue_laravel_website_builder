@@ -48,14 +48,14 @@ const form = useForm({
 // Image handling
 const fileInput = ref(null);
 const previewImage = ref(null);
-const sloganImage = ref(service?.sloganImage ? { url: '/storage/' + service.sloganImage } : null); // For existing image when editing
+const sloganimage = ref(service?.sloganimage ? { url: '/storage/' + service.sloganimage } : null); // For existing image when editing
 
 const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     // Set form data (assuming your form has an 'image' field)
-    form.sloganImage = file;
+    form.sloganimage = file;
 
     // Create preview
     previewImage.value = {
@@ -71,40 +71,73 @@ const removePreviewImage = () => {
     // Remove preview
     previewImage.value = null;
     // Remove from form data
-    form.sloganImage = null;
+    form.sloganimage = null;
 };
 
 const deleteImage = () => {
     // For existing image (when editing)
-    sloganImage.value = null;
+    sloganimage.value = null;
     // You would typically also make an API call to delete from server
 };
+
 const saveUpdate = () => {
-    // Convert form to FormData to handle file uploads
+    // Create FormData instance
     const formData = new FormData();
-
-    // Append all form fields
-    formData.append('form',form);
-
-    // Submit the form
-    form.post(route('servicepage.update',service.id), {
-        data: formData,
-        onSuccess: (page) => {
-            const message = page.props.flash?.success || 'Service Page updated successfully';
-            Swal.fire({
-                toast: true,
-                icon: 'success',
-                position: 'top-end',
-                showConfirmation: false,
-                timer: 3000,
-                title: message
-            });
-            form.reset();
-            previewImage.value = null;
-        },
-    });
+    
+    // Append all form data except files
+    for (const key in form.data()) {
+        // Skip file fields (handled separately)
+        if (key !== 'sloganimage') {
+            const value = form[key];
+            // Handle boolean values (convert to 1/0)
+            if (typeof value === 'boolean') {
+                formData.append(key, value ? '1' : '0');
+            } else if (value !== null && value !== undefined) {
+                formData.append(key, value);
+            }
+        }
+    }
+    
+    // Handle file upload if new image selected
+    if (previewImage.value && form.sloganimage instanceof File) {
+        formData.append('sloganimage', form.sloganimage);
+    }
+    
+    // Handle image removal if existing image was deleted
+    if (!sloganimage.value && service.sloganimage) {
+        formData.append('remove_image', '1');
+    }
+    
+    // Submit using Inertia's post method with proper headers
+    router.post(route('servicepage.update', service.id), 
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            onSuccess: (page) => {
+                const message = page.props.flash?.success || 'Service Page updated successfully';
+                Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    position: 'top-end',
+                    showConfirmation: false,
+                    timer: 3000,
+                    title: message
+                });
+                // Don't reset the entire form, just clear the preview
+                previewImage.value = null;
+            },
+            onError: (errors) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error updating the service page'
+                });
+            }
+        }
+    );
 };
-
 
 const addSomeServices = (service) => {
     router.visit(route('servicepage.someserv.create',service.id));
@@ -127,7 +160,7 @@ const addAllServices = (service) => {
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white">View & Quick Edit for Service Page</h2>
                             <button @click="goBack" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Back</button>
                         </div>
-
+                        
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -223,9 +256,9 @@ const addAllServices = (service) => {
                                         <td class="px-6 py-4">
                                             <div class="grid gap-4">
                                                 <!-- Current Image -->
-                                                <div v-if="sloganImage" class="mb-4">
+                                                <div v-if="sloganimage" class="mb-4">
                                                     <div class="relative inline-block">
-                                                        <img class="w-24 h-24 rounded-sm object-cover" :src="sloganImage.url" alt="Slogan image">
+                                                        <img class="w-24 h-24 rounded-sm object-cover" :src="sloganimage.url" alt="Slogan image">
                                                         <span class="absolute top-0 right-0 transform -translate-y-1/2 w-5 h-5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full cursor-pointer">
                                                             <span @click="deleteImage" class="text-white text-xs font-bold absolute flex items-center justify-center w-full h-full">×</span>
                                                         </span>

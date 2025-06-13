@@ -142,14 +142,15 @@ class ServiceController extends Controller
      */
     public function update(Request $request, StoreServiceRequest $validated, string $id)
     {
+     
         $validatedData = $validated->validated();
-
+       
         $converter = new ColorConverter();
 
-        if ($request->hasFile('sloganImage')) {
-            $file = $request->file('sloganImage');
+        if ($request->hasFile('sloganimage')) {
+            $file = $request->file('sloganimage');
             $path = $file->store('services', 'public');
-            $validatedData['sloganImage'] = $path;
+            $validatedData['sloganimage'] = $path;
 
             $service = Service::findOrFail($id);
             $service->update([
@@ -161,7 +162,7 @@ class ServiceController extends Controller
                 'sectn_someserve_bg_color' => $validatedData['sectn_someserve_bg_color'],
                 'sectn_someserve_dark_bg_color' => $validatedData['sectn_someserve_dark_bg_color'],
                 'sectn_servslogan' => $validatedData['sectn_servslogan'],
-                'sloganImage' => $path,
+                'sloganimage' => $path,
                 'caption_title' => $validatedData['caption_title'],
                 'caption_color' => $validatedData['caption_color'],
                 'slogan' => $validatedData['slogan'],
@@ -183,7 +184,8 @@ class ServiceController extends Controller
             ]);
 
         } else {
-            Service::update([
+            $service = Service::findOrFail($id);
+            $service->update([
                 'sectn_services' => $validatedData['sectn_services'],
                 'sectn_services_title' => $validatedData['sectn_services_title'],
                 'sectn_services_title_color' => $validatedData['sectn_services_title_color'],

@@ -35,6 +35,7 @@ class WelcomeOurServe extends Model
         'sectn_oservd_description_color_tw',
         'sectn_oservdh_description_color_tw',
         'welcome_id',
+        
 
     ];
 

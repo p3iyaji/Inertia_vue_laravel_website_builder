@@ -7,6 +7,8 @@ use App\Models\Navbar;
 use App\Models\Footer;
 use App\Models\Contact;
 use App\Models\Service;
+use App\Models\About;
+use App\Models\Welcome;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,11 +18,13 @@ class SiteController extends Controller
        $footer = Footer::latest('created_at')->first() ?? [];
        $navbar = Navbar::latest('created_at')->first() ?? [];
        $hero = Hero::latest('created_at')->with('images')->first();
+       $welcome = Welcome::with('welcomeserves', 'welcomeourserves', 'companylogos')->first() ?? [];
        
         return Inertia::render('Welcome', [
             'footer' => $footer,
             'navbar' => $navbar,
             'hero'  => $hero,
+            'welcome' => $welcome,
         ]);
     }
 
@@ -41,10 +45,14 @@ class SiteController extends Controller
         $footer = Footer::latest('created_at')->first() ?? [];
         $navbar = Navbar::latest('created_at')->first() ?? [];
         $hero = Hero::latest('created_at')->first() ?? [];
+        
+        $about = About::with('teammembers', 'mivis')->first();
+        
         return Inertia::render('About', [
             'footer' => $footer,
             'navbar' => $navbar,
             'hero'  => $hero,
+            'about' => $about,
         ]);
     }
 

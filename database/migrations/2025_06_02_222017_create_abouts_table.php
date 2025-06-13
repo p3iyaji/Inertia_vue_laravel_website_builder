@@ -16,7 +16,7 @@ return new class extends Migration
             $table->boolean('sectn_header')->default(0);
             $table->string('sectn_header_title')->nullable();
             $table->string('sectn_header_title_color', 10)->nullable();
-            $table->string('sectn_header_description')->nullable();
+            $table->longtext('sectn_header_description')->nullable();
             $table->string('sectn_header_description_color', 10)->nullable();
             $table->string('sectn_header_bg_color', 10)->nullable();
 
@@ -24,8 +24,8 @@ return new class extends Migration
 
 
             $table->boolean('sectn_slogan')->default(0);
-            $table->string('sectn_slogan_caption')->nullable();
-            $table->string('sectn_slogan_subcaption')->nullable();
+            $table->longtext('sectn_slogan_caption')->nullable();
+            $table->longtext('sectn_slogan_subcaption')->nullable();
             $table->string('slogan_image')->nullable();
             $table->string('sectn_slogan_caption_color', 10)->nullable();
             $table->string('sectn_slogan_bg_color', 10)->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
 
             $table->boolean('sectn_team')->default(0);
             $table->string('team_title')->nullable();
-            $table->string('team_caption')->nullable();
+            $table->longtext('team_caption')->nullable();
             $table->string('team_title_color', 10)->nullable();
             $table->string('team_caption_color', 10)->nullable();
             $table->string('team_bg_color', 10)->nullable();
